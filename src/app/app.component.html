@@ -1,16 +1,5 @@
-<!--The whole content below can be removed with the new code.-->
-<div style="width: 600px; height: 400px">
-<ya-map [latitude]="lt" [longitude]="lg">
-          <ya-marker    *ngFor="let m of markers; let i = index"
-          [latitude]="m.lat"
-          [longitude]="m.lng"
-          [balloonContentHeader]="m.balloonHeader"
-          [balloonContentBody]="m.balloonBody"
-          [balloonContentFooter]="m.balloonFooter"
-          [draggable]="m.draggable"
-           (dragEnd)="markerDragEnd(m, $event)" >
-          </ya-marker>
-           <button (click)="changePosition()">Изменить позицию</button>
- </ya-map>
-</div>
-
+<!-- this creates a google map on the page with the given lat/lng from -->
+<!-- the component as the initial center of the map: -->
+<agm-map [latitude]="MAP_CENTER.lat" [longitude]="MAP_CENTER.lng" (mapClick)="mapClicked($event)">
+  <agm-marker [latitude]="marker.lat" [longitude]="marker.lng" [markerDraggable]="true" (dragEnd)="placemarkDragEnd($event)"></agm-marker>
+</agm-map>
