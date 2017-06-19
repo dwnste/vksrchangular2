@@ -15,6 +15,14 @@
     "lib": [
       "es2016",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@angular/*": [
+        "../node_modules/@angular/*"
+      ],
+      "angular2-yandex-maps/*": [
+        "../node_modules/angular2-yandex-maps/*"
+      ]
+    }
   }
 }
