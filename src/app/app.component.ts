@@ -6,7 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['app.component.css'],
 })
 export class AppComponent {
-
   MAP_CENTER = {
     lat: 55.753994,
     lng: 37.622093
@@ -24,11 +23,4 @@ export class AppComponent {
   placemarkDragEnd($event) {
     console.log($event);
   }
-}
-
-interface marker {
-	lat: number;
-	lng: number;
-	label?: string;
-	draggable: boolean;
 }
