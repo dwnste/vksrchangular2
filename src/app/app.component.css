@@ -4,3 +4,12 @@ agm-map {
   margin: 0;
   padding: 0;
 }
+
+#content{
+    position: absolute;
+    top: 300px;
+    bottom: 0px;
+    background-color: #111;
+    width: 100%;
+    overflow-y: scroll;
+}

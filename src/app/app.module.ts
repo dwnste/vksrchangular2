@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 
 import { AgmCoreModule } from '@agm/core';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @NgModule({
   imports: [
@@ -13,7 +14,8 @@ import { AgmCoreModule } from '@agm/core';
     FormsModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyAWS2bO7tadY3eW4uQiaU2DLjPxWVA93xM'
-    })
+    }),
+    InfiniteScrollModule
   ],
   providers: [],
   declarations: [ AppComponent ],
