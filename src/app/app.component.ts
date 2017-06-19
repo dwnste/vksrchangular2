@@ -7,11 +7,8 @@ import { MapMouseEvent } from 'angular2-yandex-maps';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-    name:string;
-  
-    constructor() {
-      this.name = 'Angular2'
-    }
+    name: string;
+
     lt = '55.76';
     lg = '37.64';
     markers: any[] = [
@@ -33,13 +30,16 @@ export class AppComponent {
       }
     ];
 
-      markerDragEnd(m: any, $event: MapMouseEvent) {
+    constructor() {
+      this.name = 'Angular2'
+    }
+
+    markerDragEnd(m: any, $event: MapMouseEvent) {
         m.lat = $event.lat;
         m.lng = $event.lng;
     }
-    
-    changePosition()
-    {
+
+    changePosition() {
         console.log('posss');
         this.lg = '50.9';
         this.lt = '40.4';
