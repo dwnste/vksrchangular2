@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { YaCoreModule }  from 'angular2-yandex-maps';
+import { YaCoreModule } from 'angular2-yandex-maps';
 
 @NgModule({
   declarations: [
