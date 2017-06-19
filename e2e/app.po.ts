@@ -1,6 +1,6 @@
 import { browser, by, element } from 'protractor';
 
-export class VsaPage {
+export class Vksrchangular2Page {
   navigateTo() {
     return browser.get('/');
   }

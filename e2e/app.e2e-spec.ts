@@ -1,10 +1,10 @@
-import { VsaPage } from './app.po';
+import { Vksrchangular2Page } from './app.po';
 
-describe('vsa App', () => {
-  let page: VsaPage;
+describe('vksrchangular2 App', () => {
+  let page: Vksrchangular2Page;
 
   beforeEach(() => {
-    page = new VsaPage();
+    page = new Vksrchangular2Page();
   });
 
   it('should display welcome message', () => {
