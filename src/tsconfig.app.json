@@ -4,12 +4,7 @@
     "outDir": "../out-tsc/app",
     "module": "es2015",
     "baseUrl": "",
-    "types": [],
-    "paths": {
-          "angular2-yandex-maps/*": [
-            "../node_modules/angular2-yandex-maps/*"
-          ]
-        }
+    "types": []
   },
   "exclude": [
     "test.ts",
