@@ -1,0 +1,13 @@
+<!--The whole content below can be removed with the new code.-->
+<ya-map [latitude]="lt" [longitude]="lg">
+          <ya-marker    *ngFor="let m of markers; let i = index"
+          [latitude]="m.lat"
+          [longitude]="m.lng"
+          [balloonContentHeader]="m.balloonHeader"
+          [balloonContentBody]="m.balloonBody"
+          [balloonContentFooter]="m.balloonFooter"
+          [draggable]="m.draggable"
+           (dragEnd)="markerDragEnd(m, $event)" >
+          </ya-marker>
+           <button (click)="changePosition()">Изменить позицию</button>
+ </ya-map>
