@@ -2,6 +2,7 @@ import { Component, ElementRef, ViewChild, AfterViewInit, OnInit, OnDestroy } fr
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import 'rxjs/add/operator/skip';
 import 'rxjs/add/operator/take';
+import 'rxjs/add/operator/debounceTime';
 
 import { AppService } from './app.service';
 
@@ -37,7 +38,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   sub;
-  coords;
 
   @ViewChild('content') content: ElementRef;
 
@@ -48,6 +48,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   update = ({coords, radius = 1000, count = 50, offset = this.state.offset}) => {
     if (offset === 0) {
+
       this.state.photos = [];
       this.state.offset = 0;
 
@@ -95,11 +96,39 @@ export class AppComponent implements OnInit, OnDestroy {
   placemarkDragEnd($event) {
     this.update({coords: [$event.coords.lat, $event.coords.lng], offset: 0})
   }
+  /*
+  getParameterByName(name: any) {
+  const url = window.location.href;
+  name = name.replace(/[[]]/g, '\$&');
+  const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
+  const results = regex.exec(url);
+  if (!results) {
+    return null;
+  }
+  if (!results[2]) {
+    return '';
+  }
 
+    return decodeURIComponent(results[2]);
+  }
+  */
   ngOnInit() {
-    console.log(window.location.href);
+    this.route.queryParams
+          .debounceTime(100)
+          .subscribe((params) => {
+            this.marker.lat = params.lat;
+            this.marker.lng = params.long;
+            this.map.lat = params.lat;
+            this.map.lng = params.long;
+            this.update({coords: [params.lat, params.long], offset: 0});
+          });
+    /*
+    this.marker.lat = parseFloat(this.getParameterByName('lat')) || MAP_CENTER.lat;
+    this.marker.lng = parseFloat(this.getParameterByName('long')) || MAP_CENTER.lng;
+    this.map.lat = parseFloat(this.getParameterByName('lat')) || MAP_CENTER.lat;
+    this.map.lng = parseFloat(this.getParameterByName('long')) || MAP_CENTER.lng;
+    */
 
-    this.update({coords: [this.marker.lat, this.marker.lng], offset: 0});
   }
 
   ngOnDestroy() {
