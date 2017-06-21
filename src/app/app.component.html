@@ -10,7 +10,7 @@
   [infiniteScrollThrottle]="500"
   (scrolled)="onScroll()"
   [scrollWindow]="false">
-  <div class="image" *ngFor="let photo of photos">
+  <div class="image" *ngFor="let photo of state.photos">
       <img src={{photo.src}} />
       <a href={{photo.src_big}} target="_blank">
           {{photo.created}}

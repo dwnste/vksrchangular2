@@ -56,19 +56,18 @@ export class AppComponent implements AfterViewInit {
                 return photo;
               })));
 
-              this.state.offset += count;
+            this.state.offset += count;
 
-              if (this.content.nativeElement.scrollHeight <= this.content.nativeElement.clientHeight) {
-                this.update({coords});
-              }
-        });
+            if (this.content.nativeElement.scrollHeight <= this.content.nativeElement.clientHeight) {
+              this.update({coords});
+            }
+      });
     }
   }
 
   mapClicked($event) {
     this.marker.lat = $event.coords.lat
     this.marker.lng = $event.coords.lng
-
     this.update({coords: [$event.coords.lat, $event.coords.lng], offset: 0});
   }
 
