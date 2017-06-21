@@ -8,6 +8,7 @@ import { AgmCoreModule } from '@agm/core';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 import { AppService } from './app.service';
+import { routing, appRoutingProviders } from './app.routes';
 
 @NgModule({
   imports: [
@@ -17,9 +18,10 @@ import { AppService } from './app.service';
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyAWS2bO7tadY3eW4uQiaU2DLjPxWVA93xM'
     }),
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    routing
   ],
-  providers: [ AppService ],
+  providers: [ AppService, appRoutingProviders ],
   declarations: [ AppComponent ],
   bootstrap: [ AppComponent ]
 })

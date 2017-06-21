@@ -1,4 +1,7 @@
-import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
+import 'rxjs/add/operator/skip';
+import 'rxjs/add/operator/take';
 
 import { AppService } from './app.service';
 
@@ -16,7 +19,7 @@ const MAP_CENTER = {
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
-export class AppComponent implements AfterViewInit {
+export class AppComponent implements OnInit, OnDestroy {
   state = {
     photos: [],
     offset: 0,
@@ -33,15 +36,29 @@ export class AppComponent implements AfterViewInit {
     lng: MAP_CENTER.lng
   }
 
+  sub;
+  coords;
+
   @ViewChild('content') content: ElementRef;
 
-  constructor(private appService: AppService) {
-  }
+  constructor(
+    private appService: AppService,
+    private route: ActivatedRoute,
+    private router: Router) {}
 
   update = ({coords, radius = 1000, count = 50, offset = this.state.offset}) => {
     if (offset === 0) {
       this.state.photos = [];
       this.state.offset = 0;
+
+      const navigationExtras: NavigationExtras = {
+        queryParams: {
+          lat: coords[0],
+          long: coords[1]
+        }
+      };
+
+      this.router.navigate([''], navigationExtras);
     }
 
     if (this.state.offset <= this.state.available) {
@@ -79,7 +96,13 @@ export class AppComponent implements AfterViewInit {
     this.update({coords: [$event.coords.lat, $event.coords.lng], offset: 0})
   }
 
-  ngAfterViewInit() {
-    this.update({coords: [this.marker.lat, this.marker.lng]})
+  ngOnInit() {
+    console.log(window.location.href);
+
+    this.update({coords: [this.marker.lat, this.marker.lng], offset: 0});
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 }
