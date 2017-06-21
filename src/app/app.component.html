@@ -4,10 +4,16 @@
   <agm-marker [latitude]="marker.lat" [longitude]="marker.lng" [markerDraggable]="true" (dragEnd)="placemarkDragEnd($event)"></agm-marker>
 </agm-map>
 <div id="content"
+  #content
   infiniteScroll
   [infiniteScrollDistance]="2"
   [infiniteScrollThrottle]="500"
   (scrolled)="onScroll()"
   [scrollWindow]="false">
-  {{photos}}
+  <div class="image" *ngFor="let photo of photos">
+      <img src={{photo.src}} />
+      <a href={{photo.src_big}} target="_blank">
+          {{photo.created}}
+      </a>
+  </div>
 </div>
