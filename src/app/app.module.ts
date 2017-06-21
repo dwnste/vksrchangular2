@@ -7,6 +7,8 @@ import { AppComponent } from './app.component';
 import { AgmCoreModule } from '@agm/core';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
+import { AppService } from './app.service';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -17,7 +19,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     }),
     InfiniteScrollModule
   ],
-  providers: [],
+  providers: [ AppService ],
   declarations: [ AppComponent ],
   bootstrap: [ AppComponent ]
 })

@@ -1,6 +1,6 @@
 <!-- this creates a google map on the page with the given lat/lng from -->
 <!-- the component as the initial center of the map: -->
-<agm-map [latitude]="MAP_CENTER.lat" [longitude]="MAP_CENTER.lng" (mapClick)="mapClicked($event)">
+<agm-map [latitude]="map.lat" [longitude]="map.lng" (mapClick)="mapClicked($event)">
   <agm-marker [latitude]="marker.lat" [longitude]="marker.lng" [markerDraggable]="true" (dragEnd)="placemarkDragEnd($event)"></agm-marker>
 </agm-map>
 <div id="content"

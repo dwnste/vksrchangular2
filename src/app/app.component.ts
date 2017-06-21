@@ -1,20 +1,14 @@
-import * as fetchJsonp from 'fetch-jsonp';
 import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+
+import { AppService } from './app.service';
 
 import * as moment from 'moment'
 
 moment.locale('ru');
 
-const getPhotos = ({coords, radius, count, offset}) => {
-    const [lat, long] = coords;
-    const url = `//api.vk.com/method/photos.search?lat=${lat}&long=${long}&radius=${radius}&count=${count}&offset=${offset}`;
-    return fetchJsonp(url)
-            .then( response => response.json())
-            .then( ({ response }) => {
-                        const [photosAvailable, ...photos] = response;
-                        return {photosAvailable, photos};
-                    })
-            .catch( ex => console.log('parsing failed', ex) );
+const MAP_CENTER = {
+  lat: 55.753994,
+  lng: 37.622093
 }
 
 @Component({
@@ -23,28 +17,33 @@ const getPhotos = ({coords, radius, count, offset}) => {
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent implements AfterViewInit {
-  MAP_CENTER = {
-    lat: 55.753994,
-    lng: 37.622093
-  }
   photos = [];
   offset = 0;
   available = 0;
 
   marker = {
-    lat: this.MAP_CENTER.lat,
-    lng: this.MAP_CENTER.lng
+    lat: MAP_CENTER.lat,
+    lng: MAP_CENTER.lng
+  }
+
+  map = {
+    lat: MAP_CENTER.lat,
+    lng: MAP_CENTER.lng
   }
 
   @ViewChild('content') content: ElementRef;
+
+  constructor(private appService: AppService) {
+  }
 
   update = ({coords, radius = 1000, count = 50, offset = this.offset}) => {
     if (offset === 0) {
       this.photos = [];
       this.offset = 0;
     }
+
     if (this.offset <= this.available) {
-      getPhotos({coords, radius, count, offset: this.offset}).then((resp: any) => {
+      this.appService.getData({coords, radius, count, offset: this.offset}).then((resp: any) => {
         this.available = resp.photosAvailable;
         this.photos = this.photos.concat(resp.photos.map(photo => {
           photo.created = moment(photo.created * 1000).format('L')
