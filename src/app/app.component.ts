@@ -1,5 +1,5 @@
-import { Component, ElementRef, ViewChild, AfterViewInit, OnInit, OnDestroy} from '@angular/core';
-import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
+import { Component, ElementRef, ViewChild, AfterViewInit, OnInit } from '@angular/core';
+import { Router, NavigationExtras } from '@angular/router';
 import 'rxjs/add/operator/skip';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/debounceTime';
@@ -7,6 +7,7 @@ import 'rxjs/add/operator/debounceTime';
 import { AppService } from './app.service';
 
 import * as moment from 'moment'
+import * as qs from 'query-string'
 
 moment.locale('ru');
 
@@ -20,7 +21,7 @@ const MAP_CENTER = {
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit {
   state = {
     photos: [],
     offset: 0,
@@ -33,8 +34,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   map = {
-    lat: MAP_CENTER.lat,
-    lng: MAP_CENTER.lng
+    lat: this.marker.lat,
+    lng: this.marker.lng
   }
 
   sub;
@@ -43,23 +44,20 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private appService: AppService,
-    private route: ActivatedRoute,
     private router: Router) {}
 
   update = ({coords, radius = 1000, count = 50, offset = this.state.offset}) => {
     if (offset === 0) {
-
-      this.state.photos = [];
-      this.state.offset = 0;
-
       const navigationExtras: NavigationExtras = {
         queryParams: {
-          lat: coords[0],
-          long: coords[1]
+          lat: this.marker.lat,
+          lng: this.marker.lng
         }
       };
 
       this.router.navigate([''], navigationExtras);
+      this.state.photos = [];
+      this.state.offset = 0;
     }
 
     if (this.state.offset <= this.state.available) {
@@ -97,45 +95,15 @@ export class AppComponent implements OnInit, OnDestroy {
     this.update({coords: [$event.coords.lat, $event.coords.lng], offset: 0})
   }
 
-  getParameterByName(name: any) {
-  const url = window.location.href;
-  name = name.replace(/[[]]/g, '\$&');
-  const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
-  const results = regex.exec(url);
-  if (!results) {
-    return null;
-  }
-  if (!results[2]) {
-    return '';
-  }
-
-    return decodeURIComponent(results[2]);
-  }
-
   ngOnInit() {
-    this.sub = this.route.queryParams
-      .debounceTime(100)
-      .subscribe((params) => {
-        console.log(this.marker, 'before');
-        const paramsObj = {
-          lat: params.lat,
-          lng: params.long
-        }
-        this.marker = paramsObj;
-        this.map = paramsObj;
-        console.log(this.marker, 'after');
-        this.update({coords: [params.lat || MAP_CENTER.lat, params.long || MAP_CENTER.lng], offset: 0});
-      });
-    /*
-    this.marker.lat = parseFloat(this.getParameterByName('lat')) || MAP_CENTER.lat;
-    this.marker.lng = parseFloat(this.getParameterByName('long')) || MAP_CENTER.lng;
-    this.map.lat = parseFloat(this.getParameterByName('lat')) || MAP_CENTER.lat;
-    this.map.lng = parseFloat(this.getParameterByName('long')) || MAP_CENTER.lng;
-    this.update({coords: [this.marker.lat, this.marker.lng], offset: 0});
-    */
-  }
+    const queryParams = {
+      lat: parseFloat(qs.parse(window.location.search).lat) || MAP_CENTER.lat,
+      lng: parseFloat(qs.parse(window.location.search).lng) || MAP_CENTER.lng
+    }
 
-  ngOnDestroy() {
-    this.sub.unsubscribe();
+    this.marker = {...queryParams};
+    this.map = {...queryParams};
+
+    this.update({coords: [this.marker.lat, this.marker.lng], offset: 0});
   }
 }
