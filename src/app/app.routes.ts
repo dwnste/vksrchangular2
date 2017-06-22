@@ -10,8 +10,13 @@ export const APP_ROUTES: Routes = [
     path: '',
     component: MapComponent
   },
-  { path: 'profile',
-    component: ProfileComponent }
+  {
+    path: 'profile/:id',
+    component: ProfileComponent
+  },
+  {
+    path: '**', redirectTo: '' // FIXME: ADD 404
+  }
 ];
 
 export const appRoutingProviders: any[] = [
