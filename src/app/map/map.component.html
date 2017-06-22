@@ -10,7 +10,7 @@
   [scrollWindow]="false">
   <div class="image" *ngFor="let photo of state.photos">
       <img src={{photo.src}} />
-      <a [routerLink]="['/profile', photo.owner_id]" target="_blank" *ngIf="photo.owner_id > 0">
+      <a *ngIf="photo.owner_id > 0" [routerLink]="['/profile', photo.owner_id]">
         {{photo.created}}
       </a>
       <a *ngIf="photo.owner_id < 0" href="http://vk.com/club{{photo.owner_id * -1}}">

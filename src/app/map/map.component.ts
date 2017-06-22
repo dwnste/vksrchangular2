@@ -39,6 +39,8 @@ export class MapComponent implements OnInit {
     lng: MAP_CENTER.lng
   }
 
+  show_groups = false;
+
   @ViewChild('content') content: ElementRef;
 
   constructor(
