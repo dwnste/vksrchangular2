@@ -7,8 +7,10 @@ import { AppComponent } from './app.component';
 import { AgmCoreModule } from '@agm/core';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
-import { AppService } from './app.service';
 import { routing, appRoutingProviders } from './app.routes';
+import { ProfileComponent } from './profile/profile.component';
+import { MapComponent } from './map/map.component';
+import { MapService } from './map/map.service';
 
 @NgModule({
   imports: [
@@ -21,8 +23,8 @@ import { routing, appRoutingProviders } from './app.routes';
     InfiniteScrollModule,
     routing
   ],
-  providers: [ AppService, appRoutingProviders ],
-  declarations: [ AppComponent ],
+  providers: [ appRoutingProviders, MapService ],
+  declarations: [ AppComponent, ProfileComponent, MapComponent ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule {}

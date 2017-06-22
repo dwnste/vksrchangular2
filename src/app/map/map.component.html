@@ -1,0 +1,17 @@
+<agm-map [latitude]="map.lat" [longitude]="map.lng" (mapClick)="mapClicked($event)">
+  <agm-marker [latitude]="marker.lat" [longitude]="marker.lng" [markerDraggable]="true" (dragEnd)="placemarkDragEnd($event)"></agm-marker>
+</agm-map>
+<div id="content"
+  #content
+  infiniteScroll
+  [infiniteScrollDistance]="2"
+  [infiniteScrollThrottle]="500"
+  (scrolled)="onScroll()"
+  [scrollWindow]="false">
+  <div class="image" *ngFor="let photo of state.photos">
+      <img src={{photo.src}} />
+      <a [routerLink]="['/profile', photo.owner_id]" target="_blank">
+          {{photo.created}}
+      </a>
+  </div>
+</div>
