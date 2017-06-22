@@ -3,12 +3,7 @@ import * as fetchJsonp from 'fetch-jsonp';
 
 export class ProfileService {
     getData(id) {
-        const url = parseInt(id, 10) > 0
-        ?
-        `//api.vk.com/method/users.get?user_ids=${id}&fields=photo_200&name_case=nom`
-        :
-        `//api.vk.com/method/groups.get?group_id=${id}&fields=photo_200`
-        console.log(url);
+        const url = `//api.vk.com/method/users.get?user_ids=${id}&fields=photo_200&name_case=nom`
         return fetchJsonp(url)
                 .then( response => response.json())
                 .then( ({ response }) => {
