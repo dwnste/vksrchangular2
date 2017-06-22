@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit, OnInit, OnDestroy} from '@angular/core';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import 'rxjs/add/operator/skip';
 import 'rxjs/add/operator/take';
@@ -96,7 +96,7 @@ export class AppComponent implements OnInit, OnDestroy {
   placemarkDragEnd($event) {
     this.update({coords: [$event.coords.lat, $event.coords.lng], offset: 0})
   }
-  /*
+
   getParameterByName(name: any) {
   const url = window.location.href;
   name = name.replace(/[[]]/g, '\$&');
@@ -111,24 +111,28 @@ export class AppComponent implements OnInit, OnDestroy {
 
     return decodeURIComponent(results[2]);
   }
-  */
+
   ngOnInit() {
-    this.route.queryParams
-          .debounceTime(100)
-          .subscribe((params) => {
-            this.marker.lat = params.lat;
-            this.marker.lng = params.long;
-            this.map.lat = params.lat;
-            this.map.lng = params.long;
-            this.update({coords: [params.lat, params.long], offset: 0});
-          });
+    this.sub = this.route.queryParams
+      .debounceTime(100)
+      .subscribe((params) => {
+        console.log(this.marker, 'before');
+        const paramsObj = {
+          lat: params.lat,
+          lng: params.long
+        }
+        this.marker = paramsObj;
+        this.map = paramsObj;
+        console.log(this.marker, 'after');
+        this.update({coords: [params.lat || MAP_CENTER.lat, params.long || MAP_CENTER.lng], offset: 0});
+      });
     /*
     this.marker.lat = parseFloat(this.getParameterByName('lat')) || MAP_CENTER.lat;
     this.marker.lng = parseFloat(this.getParameterByName('long')) || MAP_CENTER.lng;
     this.map.lat = parseFloat(this.getParameterByName('lat')) || MAP_CENTER.lat;
     this.map.lng = parseFloat(this.getParameterByName('long')) || MAP_CENTER.lng;
+    this.update({coords: [this.marker.lat, this.marker.lng], offset: 0});
     */
-
   }
 
   ngOnDestroy() {
