@@ -12,6 +12,10 @@ export class DialogComponent implements OnInit {
 
   constructor(public dialog: MdDialog) {}
 
+  submitForm(formData) {
+    console.log(formData);
+  }
+
   ngOnInit() {
   }
 
