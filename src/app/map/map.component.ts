@@ -1,11 +1,14 @@
-import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnInit, ViewContainerRef } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
+import { MdDialog, MdDialogConfig } from '@angular/material';
 
 import 'rxjs/add/operator/skip';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/debounceTime';
 
 import { MapService } from './map.service';
+
+import { DialogComponent } from '../dialog/dialog.component';
 
 import * as moment from 'moment'
 import * as qs from 'query-string'
@@ -45,7 +48,15 @@ export class MapComponent implements OnInit {
 
   constructor(
     private appService: MapService,
-    private router: Router) {}
+    private router: Router,
+    public dialog: MdDialog,
+    public vcr: ViewContainerRef) {}
+
+  buttonClick() {
+    const config = new MdDialogConfig();
+    config.viewContainerRef = this.vcr;
+    this.dialog.open(DialogComponent, config);
+  }
 
   update = ({coords, radius = 1000, count = 50, offset = this.state.offset}) => {
     if (offset === 0) {

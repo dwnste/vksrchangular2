@@ -1,0 +1,20 @@
+<form>
+  <md-input-container>
+    <input mdInput placeholder="lat" value="">
+  </md-input-container>
+  <div class="md-errors-spacer"></div>
+
+  <md-input-container>
+    <input mdInput placeholder="long" value="">
+  </md-input-container>
+  <div class="md-errors-spacer"></div>
+
+  <md-input-container>
+    <input mdInput placeholder="Радиус (в метрах)" value="">
+  </md-input-container>
+  <div class="md-errors-spacer"></div>
+
+  <div class="submit-button">
+    <button md-button (click)="submitForm()" md-dialog-close="submitForm()">Поиск</button>
+  </div>
+</form>

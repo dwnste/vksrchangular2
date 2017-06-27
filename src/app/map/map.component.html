@@ -1,6 +1,13 @@
 <agm-map [latitude]="map.lat" [longitude]="map.lng" (mapClick)="mapClicked($event)">
   <agm-marker [latitude]="marker.lat" [longitude]="marker.lng" [markerDraggable]="true" (dragEnd)="placemarkDragEnd($event)"></agm-marker>
 </agm-map>
+<md-toolbar color="primary">
+  <div class="menu">
+    <button md-raised-button (click)="buttonClick()">
+      <md-icon>input</md-icon> Ввести данные
+    </button>
+  </div>
+</md-toolbar>
 <div id="content"
   #content
   infiniteScroll
