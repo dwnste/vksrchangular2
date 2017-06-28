@@ -1,19 +1,12 @@
 import { Component, ElementRef, ViewChild, OnInit, ViewContainerRef } from '@angular/core';
-import { Router, NavigationExtras } from '@angular/router';
 import { MdDialog, MdDialogConfig } from '@angular/material';
-
-import 'rxjs/add/operator/skip';
-import 'rxjs/add/operator/take';
-import 'rxjs/add/operator/debounceTime';
+import { Router, NavigationExtras } from '@angular/router';
 
 import { MapService } from './map.service';
 
 import { DialogComponent } from '../dialog/dialog.component';
 
-import * as moment from 'moment'
 import * as qs from 'query-string'
-
-moment.locale('ru');
 
 const MAP_CENTER = {
   lat: 55.753994,
@@ -26,31 +19,15 @@ const MAP_CENTER = {
   styleUrls: ['map.component.scss'],
 })
 export class MapComponent implements OnInit {
-  state = {
-    photos: [],
-    offset: 0,
-    available: 0
-  }
-
-  marker = {
-    lat: MAP_CENTER.lat,
-    lng: MAP_CENTER.lng
-  }
-
-  map = {
-    lat: MAP_CENTER.lat,
-    lng: MAP_CENTER.lng
-  }
-
-  show_groups = false;
 
   @ViewChild('content') content: ElementRef;
 
   constructor(
     private appService: MapService,
-    private router: Router,
     public dialog: MdDialog,
-    public vcr: ViewContainerRef) {}
+    public vcr: ViewContainerRef,
+    private router: Router) {}
+
 
   buttonClick() {
     const config = new MdDialogConfig();
@@ -58,50 +35,32 @@ export class MapComponent implements OnInit {
     this.dialog.open(DialogComponent, config);
   }
 
-  update = ({coords, radius = 1000, count = 50, offset = this.state.offset}) => {
-    if (offset === 0) {
+  update({coords, ...params}) {
+    this.appService.update({coords, ...params}).then(() => {
+
       const navigationExtras: NavigationExtras = {
-        queryParams: {
-          lat: this.marker.lat,
-          lng: this.marker.lng
-        }
+          queryParams: {
+              lat: coords[0],
+              lng: coords[1]
+          }
       };
 
       this.router.navigate([''], navigationExtras);
 
-      this.state.photos = [];
-      this.state.offset = 0;
-    }
-
-    if (this.state.offset <= this.state.available) {
-      this.appService.getData({coords, radius, count, offset: this.state.offset})
-        .then((resp: any) => {
-          this.state.available = resp.photosAvailable;
-
-          this.state.photos = (
-            this.state.photos.concat(
-              resp.photos.map(photo => {
-                photo.created = moment(photo.created * 1000).format('L');
-                return photo;
-              })));
-
-            this.state.offset += count;
-
-            if (this.content.nativeElement.scrollHeight <= this.content.nativeElement.clientHeight) {
-              this.update({coords});
-            }
-      });
-    }
+      if (this.content.nativeElement.scrollHeight <= this.content.nativeElement.clientHeight) {
+          this.appService.update({coords});
+      }
+    })
   }
 
   mapClicked($event) {
-    this.marker.lat = $event.coords.lat
-    this.marker.lng = $event.coords.lng
+    console.log(this.appService.state.markerCoords)
+    this.appService.state.markerCoords = {lat: $event.coords.lat, lng: $event.coords.lng};
     this.update({coords: [$event.coords.lat, $event.coords.lng], offset: 0});
   }
 
   onScroll () {
-    this.update({coords: [this.marker.lat, this.marker.lng]});
+    this.update({ coords: [this.appService.state.markerCoords.lat, this.appService.state.markerCoords.lng] });
   }
 
   placemarkDragEnd($event) {
@@ -114,9 +73,9 @@ export class MapComponent implements OnInit {
       lng: parseFloat(qs.parse(window.location.search).lng) || MAP_CENTER.lng
     }
 
-    this.marker = {...queryParams};
-    this.map = {...queryParams};
+    this.appService.state.markerCoords = {...queryParams};
+    this.appService.state.mapCoords = {...queryParams};
 
-    this.update({coords: [this.marker.lat, this.marker.lng], offset: 0});
+    this.update({coords: [queryParams.lat, queryParams.lng], offset: 0});
   }
 }

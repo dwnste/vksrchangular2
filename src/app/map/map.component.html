@@ -1,5 +1,5 @@
-<agm-map [latitude]="map.lat" [longitude]="map.lng" (mapClick)="mapClicked($event)">
-  <agm-marker [latitude]="marker.lat" [longitude]="marker.lng" [markerDraggable]="true" (dragEnd)="placemarkDragEnd($event)"></agm-marker>
+<agm-map [latitude]="appService.state.mapCoords.lat" [longitude]="appService.state.mapCoords.lng" (mapClick)="mapClicked($event)">
+  <agm-marker [latitude]="appService.state.markerCoords.lat" [longitude]="appService.state.markerCoords.lng" [markerDraggable]="true" (dragEnd)="placemarkDragEnd($event)"></agm-marker>
 </agm-map>
 <md-toolbar color="primary">
   <div class="menu">
@@ -15,7 +15,7 @@
   [infiniteScrollThrottle]="500"
   (scrolled)="onScroll()"
   [scrollWindow]="false">
-  <div class="image" *ngFor="let photo of state.photos">
+  <div class="image" *ngFor="let photo of appService.state.photos">
       <img src={{photo.src}} />
       <a *ngIf="photo.owner_id > 0" [routerLink]="['/profile', photo.owner_id]">
         {{photo.created}}
