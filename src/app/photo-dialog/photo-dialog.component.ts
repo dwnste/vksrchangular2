@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MdDialog } from '@angular/material';
+import { MdDialog, MdGridListModule, MdGridTile } from '@angular/material';
 
 import { AppService } from '../app.service';
 
@@ -9,21 +9,41 @@ import { AppService } from '../app.service';
   styleUrls: ['./photo-dialog.component.scss']
 })
 export class PhotoDialogComponent implements OnInit {
-  photoData: any;
+  data: any;
+  amount: number;
+  index: number;
 
   constructor(private emmiterService: AppService) { }
 
+  updateCounter() {
+    this.index = this.data.photos.indexOf(this.data.photo);
+    this.amount = this.data.photos.length;
+  }
+
   ngOnInit() {
-    this.photoData = this.emmiterService.currentPhotoData;
+    this.data = this.emmiterService.currentPhotoData;
+    this.updateCounter();
   }
 
   nextPhoto() {
-    const index = this.photoData.photos.indexOf(this.photoData.photo);
-    if (this.photoData.photos.length - 1 > index) {
-      this.photoData = {photo: this.photoData.photos[index + 1], photos: this.photoData.photos}
+    if (this.data.photos.length - 1 > this.index) {
+      this.data = {photo: this.data.photos[this.index + 1], photos: this.data.photos}
     } else {
-      this.photoData = {photo: this.photoData.photos[0], photos: this.photoData.photos}
+      this.data = {photo: this.data.photos[0], photos: this.data.photos}
     }
+    this.updateCounter();
+  }
+
+  prevPhoto() {
+    if (this.index === 0) {
+      this.data = {
+        photo: this.data.photos[this.data.photos.length - 1],
+        photos: this.data.photos
+      }
+    } else {
+      this.data = {photo: this.data.photos[this.index - 1], photos: this.data.photos}
+    }
+    this.updateCounter();
   }
 
 }

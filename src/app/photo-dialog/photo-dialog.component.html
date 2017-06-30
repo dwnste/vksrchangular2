@@ -1,1 +1,19 @@
-<img md-media-sm src="{{photoData.photo.src_big}}" (click)="nextPhoto()" alt="">
+<div style="height: 550px; width: 700px">
+  <div>
+    {{index + 1}}/{{amount}}
+  </div>
+  <md-grid-list cols="7" rowHeight="1:5" >
+    <md-grid-tile (click)="prevPhoto()">
+      <img style="height: 128px; width: 128px" src="https://cdn4.iconfinder.com/data/icons/developer-set-3/128/left-128.png" alt="">
+    </md-grid-tile>
+    <md-grid-tile [colspan]="5" [rowspan]="1">
+      <img md-media-sm src="{{data.photo.src_big}}" (click)="nextPhoto()" alt="">
+    </md-grid-tile>
+    <md-grid-tile (click)="nextPhoto()">
+      <img style="height: 128px; width: 128px" src="https://cdn4.iconfinder.com/data/icons/developer-set-3/128/right-128.png" alt="">
+    </md-grid-tile>
+  </md-grid-list>
+  <div style="width: 100%; text-align: center">
+    {{data.photo.text}}
+  </div>
+</div>
