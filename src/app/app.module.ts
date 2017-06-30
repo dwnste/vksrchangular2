@@ -20,6 +20,7 @@ import { MapService } from './map/map.service';
 import { routing, appRoutingProviders } from './app.routes';
 
 import 'hammerjs';
+import { PhotoDialogComponent } from './photo-dialog/photo-dialog.component';
 
 @NgModule({
   imports: [
@@ -33,8 +34,8 @@ import 'hammerjs';
     routing
   ],
   providers: [ appRoutingProviders, MapService, ProfileService, AppService ],
-  declarations: [ AppComponent, ProfileComponent, MapComponent, DialogComponent ],
-  entryComponents: [ DialogComponent ],
+  declarations: [ AppComponent, ProfileComponent, MapComponent, DialogComponent, PhotoDialogComponent ],
+  entryComponents: [ DialogComponent, PhotoDialogComponent ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule {}

@@ -6,6 +6,7 @@ import { AppService } from '../app.service';
 import { MapService } from './map.service';
 
 import { DialogComponent } from '../dialog/dialog.component';
+import { PhotoDialogComponent } from '../photo-dialog/photo-dialog.component';
 
 import * as qs from 'query-string'
 
@@ -38,19 +39,32 @@ export class MapComponent implements OnInit {
     this.dialog.open(DialogComponent, config);
   }
 
+  photoClick(photoData) {
+    this.emmiterService.currentPhotoData = photoData;
+    const config = new MdDialogConfig();
+    config.viewContainerRef = this.vcr;
+    this.dialog.open(PhotoDialogComponent, config);
+  }
+
   update({coords, ...params}) {
     this.appService.update({coords, ...params}).then(() => {
 
-      const navigationExtras: NavigationExtras = {
-          queryParams: {
-              lat: coords[0],
-              lng: coords[1]
-          }
-      };
+      if ('offset' in params) {
+        if (params['offset'] === 0) {
+          const navigationExtras: NavigationExtras = {
+              queryParams: {
+                  lat: coords[0],
+                  lng: coords[1]
+              }
+          };
+          this.router.navigate([''], navigationExtras);
+        }
+      }
 
-      this.router.navigate([''], navigationExtras);
       if (this.content.nativeElement.scrollHeight <= this.content.nativeElement.clientHeight) {
-        this.update({coords});
+        if (this.appService.state.available >= this.appService.state.offset) {
+          this.update({coords});
+        }
       }
     })
   }
