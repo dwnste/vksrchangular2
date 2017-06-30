@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
 import { MdDialog } from '@angular/material';
 import { AbstractControl } from '@angular/forms';
 import { MapService } from '../map/map.service';
@@ -12,7 +12,7 @@ function floatValidator(ctrl: AbstractControl) {}
   styleUrls: ['./dialog.component.scss']
 })
 export class DialogComponent implements OnInit {
-
+  @Output() panTo = new EventEmitter<boolean>();
   @ViewChild('content') content: ElementRef;
 
   constructor(public dialog: MdDialog,
@@ -20,9 +20,8 @@ export class DialogComponent implements OnInit {
               private router: Router) {}
 
   submitForm(formData) {
-    this.mapService.state.markerCoords = {lat: formData.lat, lng: formData.long};
-    this.mapService.state.mapCoords = {lat: formData.lat, lng: formData.long};
-
+    this.mapService.state.markerCoords = {lat: parseFloat(formData.lat), lng: parseFloat(formData.long)};
+    this.panTo.emit(true);
     this.mapService.update({coords: [formData.lat, formData.long], radius: formData.radius, offset: 0})
     .then(() => {
                   const navigationExtras: NavigationExtras = {

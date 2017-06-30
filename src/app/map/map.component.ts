@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnInit, ViewContainerRef, Input } from '@angular/core';
 import { MdDialog, MdDialogConfig } from '@angular/material';
 import { Router, NavigationExtras } from '@angular/router';
 
@@ -19,8 +19,9 @@ const MAP_CENTER = {
   styleUrls: ['map.component.scss'],
 })
 export class MapComponent implements OnInit {
-
   @ViewChild('content') content: ElementRef;
+
+  map;
 
   constructor(
     private appService: MapService,
@@ -54,28 +55,41 @@ export class MapComponent implements OnInit {
   }
 
   mapClicked($event) {
-    console.log(this.appService.state.markerCoords)
-    this.appService.state.markerCoords = {lat: $event.coords.lat, lng: $event.coords.lng};
-    this.update({coords: [$event.coords.lat, $event.coords.lng], offset: 0});
+    this.appService.state.markerCoords = $event.latLng;
+    this.update({coords: [$event.latLng.lat(), $event.latLng.lng()], offset: 0});
   }
 
   onScroll () {
-    this.update({ coords: [this.appService.state.markerCoords.lat, this.appService.state.markerCoords.lng] });
+    this.update({
+      coords:
+      [this.appService.state.markerCoords.lat(),
+       this.appService.state.markerCoords.lng()]
+    });
   }
 
   placemarkDragEnd($event) {
-    this.update({coords: [$event.coords.lat, $event.coords.lng], offset: 0})
+    this.update({coords: [$event.latLng.lat(), $event.latLng.lng()], offset: 0})
   }
 
-  ngOnInit() {
+  onMapReady(map) {
+    this.map = map;
+
     const queryParams = {
       lat: parseFloat(qs.parse(window.location.search).lat) || MAP_CENTER.lat,
       lng: parseFloat(qs.parse(window.location.search).lng) || MAP_CENTER.lng
     }
 
-    this.appService.state.markerCoords = {...queryParams};
-    this.appService.state.mapCoords = {...queryParams};
+    this.appService.state.markerCoords = new google.maps.LatLng(queryParams.lat, queryParams.lng);
+    map.panTo(this.appService.state.markerCoords);
 
     this.update({coords: [queryParams.lat, queryParams.lng], offset: 0});
+  }
+
+  panTo(needToPan: boolean) {
+    this.map.panTo(this.appService.state.markerCoords);
+    console.log('panned?')
+  }
+
+  ngOnInit() {
   }
 }

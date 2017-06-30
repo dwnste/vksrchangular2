@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 
 import { MaterialModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AgmCoreModule } from '@agm/core';
+import { NguiMapModule} from '@ngui/map';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 import { AppComponent } from './app.component';
@@ -27,9 +27,7 @@ import 'hammerjs';
     FormsModule,
     MaterialModule,
     BrowserAnimationsModule,
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyAWS2bO7tadY3eW4uQiaU2DLjPxWVA93xM'
-    }),
+    NguiMapModule.forRoot({apiUrl: 'https://maps.google.com/maps/api/js?key=AIzaSyAWS2bO7tadY3eW4uQiaU2DLjPxWVA93xM'}),
     InfiniteScrollModule,
     routing
   ],

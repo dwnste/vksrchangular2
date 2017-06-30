@@ -1,6 +1,14 @@
-<agm-map [latitude]="appService.state.mapCoords.lat" [longitude]="appService.state.mapCoords.lng" (mapClick)="mapClicked($event)">
-  <agm-marker [latitude]="appService.state.markerCoords.lat" [longitude]="appService.state.markerCoords.lng" [markerDraggable]="true" (dragEnd)="placemarkDragEnd($event)"></agm-marker>
-</agm-map>
+<ngui-map  
+  zoom="10" 
+  center=""
+  (mapClick)="mapClicked($event)"
+  (mapReady$)="onMapReady($event)">
+  <marker
+      draggable="true"
+      [position]="appService.state.markerCoords"
+      (dragend)="placemarkDragEnd($event)">
+  </marker>
+</ngui-map>
 <md-toolbar color="primary">
   <div class="menu">
     <button md-raised-button (click)="buttonClick()">

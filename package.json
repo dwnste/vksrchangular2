@@ -25,12 +25,13 @@
     "zone.js": "^0.8.4"
   },
   "devDependencies": {
-    "@agm/core": "^1.0.0-beta.0",
     "@angular/animations": "^4.2.4",
     "@angular/cli": "1.1.2",
     "@angular/compiler-cli": "^4.0.0",
     "@angular/language-service": "^4.0.0",
     "@angular/material": "^2.0.0-beta.7",
+    "@ngui/map": "^0.18.3",
+    "@types/googlemaps": "^3.26.14",
     "@types/hammerjs": "^2.0.34",
     "@types/jasmine": "2.5.45",
     "@types/node": "~6.0.60",

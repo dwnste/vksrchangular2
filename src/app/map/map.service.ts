@@ -6,17 +6,16 @@ import * as moment from 'moment';
 
 moment.locale('ru');
 
+const MAP_CENTER = {
+  lat: 55.753994,
+  lng: 37.622093
+}
+
 @Injectable()
 export class MapService {
     state = {
-        markerCoords: {
-            lat: 0,
-            lng: 0
-        },
-        mapCoords: {
-            lat: 0,
-            lng: 0
-        },
+        markerCoords: <any>{},
+        mapCoords: <any>{},
         radius: 1000,
         photos: [],
         offset: 0,
