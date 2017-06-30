@@ -24,16 +24,17 @@ export class DialogComponent implements OnInit {
   submitForm(formData) {
     this.mapService.state.markerCoords = {lat: parseFloat(formData.lat), lng: parseFloat(formData.long)};
     this.emmiterService.setPanStatus(true);
-    this.mapService.update({coords: [formData.lat, formData.long], radius: formData.radius, offset: 0})
-    .then(() => {
-                  const navigationExtras: NavigationExtras = {
-                      queryParams: {
-                          lat: formData.lat,
-                          lng: formData.long
-                      }
-                  };
+    this.mapService
+      .update({coords: [formData.lat, formData.long], radius: formData.radius, offset: 0})
+      .then(() => {
+        const navigationExtras: NavigationExtras = {
+            queryParams: {
+                lat: formData.lat,
+                lng: formData.long
+            }
+        };
 
-                  this.router.navigate([''], navigationExtras);
+        this.router.navigate([''], navigationExtras);
     });
   }
 
