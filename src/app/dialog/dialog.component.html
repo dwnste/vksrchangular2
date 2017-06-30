@@ -10,6 +10,8 @@
   <div class="md-errors-spacer"></div>
 
   <label for="radius">Радиус</label>
-  <md-slider ngModel color="primary" name="radius" type="number" min="100" max="1000" step="1" value="10"></md-slider> {{form.value.radius || 100}}
-  <button md-raised-button color="primary" type="button" (click)="submitForm(form.value)" [disabled]="!form.form.valid" md-dialog-close>Поиск</button>
+  <md-slider ngModel color="primary" name="radius" type="number" min="10" max="1000" step="1" value="10"></md-slider> {{form.value.radius || 100}}
+  <div class="submit-button"> 
+    <button md-raised-button color="primary" type="button" (click)="submitForm(form.value)" [disabled]="!form.form.valid" md-dialog-close>Поиск</button>
+  </div>
 </form>
