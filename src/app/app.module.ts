@@ -13,6 +13,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { MapComponent } from './map/map.component';
 import { DialogComponent } from './dialog/dialog.component';
 
+import { AppService } from './app.service'
 import { ProfileService } from './profile/profile.service'
 import { MapService } from './map/map.service';
 
@@ -31,7 +32,7 @@ import 'hammerjs';
     InfiniteScrollModule,
     routing
   ],
-  providers: [ appRoutingProviders, MapService, ProfileService ],
+  providers: [ appRoutingProviders, MapService, ProfileService, AppService ],
   declarations: [ AppComponent, ProfileComponent, MapComponent, DialogComponent ],
   entryComponents: [ DialogComponent ],
   bootstrap: [ AppComponent ]

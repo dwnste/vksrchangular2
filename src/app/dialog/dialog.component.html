@@ -1,18 +1,18 @@
 <form novalidate #form="ngForm">
   <md-input-container>
-    <input mdInput ngModel placeholder="Широта" value="" name="lat">
+    <input required mdInput ngModel type="number" placeholder="Широта" value="" name="lat">
   </md-input-container>
   <div class="md-errors-spacer"></div>
 
   <md-input-container>
-    <input mdInput ngModel placeholder="Долгота" value="" name="long">
+    <input required mdInput ngModel placeholder="Долгота" type="number" value="" name="long">
   </md-input-container>
   <div class="md-errors-spacer"></div>
 
   <label for="radius">Радиус</label>
-  <md-slider ngModel color="primary" name="radius" min="100" max="1000" step="1" value="10"></md-slider> {{form.value.radius || 100}}
+  <md-slider ngModel color="primary" name="radius" type="number" min="100" max="1000" step="1" value="10"></md-slider> {{form.value.radius || 100}}
 
   <div class="submit-button">
-    <button md-button (click)="submitForm(form.value)" md-dialog-close>Поиск</button>
+    <button md-raised-button color="primary" type="button" (click)="submitForm(form.value)" [disabled]="!form.form.valid" md-dialog-close>Поиск</button>
   </div>
 </form>

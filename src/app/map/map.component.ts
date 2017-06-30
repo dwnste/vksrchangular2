@@ -2,6 +2,7 @@ import { Component, ElementRef, ViewChild, OnInit, ViewContainerRef, Input } fro
 import { MdDialog, MdDialogConfig } from '@angular/material';
 import { Router, NavigationExtras } from '@angular/router';
 
+import { AppService } from '../app.service';
 import { MapService } from './map.service';
 
 import { DialogComponent } from '../dialog/dialog.component';
@@ -27,7 +28,8 @@ export class MapComponent implements OnInit {
     private appService: MapService,
     public dialog: MdDialog,
     public vcr: ViewContainerRef,
-    private router: Router) {}
+    private router: Router,
+    private emmiterService: AppService) {}
 
 
   buttonClick() {
@@ -83,11 +85,14 @@ export class MapComponent implements OnInit {
     map.panTo(this.appService.state.markerCoords);
 
     this.update({coords: [queryParams.lat, queryParams.lng], offset: 0});
-  }
 
-  panTo(needToPan: boolean) {
-    this.map.panTo(this.appService.state.markerCoords);
-    console.log('panned?')
+    this.emmiterService.getPanStatus()
+      .subscribe((panStatus) => {
+        if (panStatus) {
+          this.map.panTo(this.appService.state.markerCoords);
+          this.emmiterService.setPanStatus(false);
+        }
+      })
   }
 
   ngOnInit() {

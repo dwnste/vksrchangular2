@@ -15,7 +15,6 @@ const MAP_CENTER = {
 export class MapService {
     state = {
         markerCoords: <any>{},
-        mapCoords: <any>{},
         radius: 1000,
         photos: [],
         offset: 0,
@@ -23,14 +22,6 @@ export class MapService {
     }
 
     constructor() {}
-
-    setState({...args}: any) {
-        for (let arg of args) {
-            if (`${arg}` in this.state) {
-                this.state[`${arg}`] = args[`${arg}`]
-            }
-        }
-    }
 
     getData({coords, radius, count, offset}) {
         const [lat, long] = coords;

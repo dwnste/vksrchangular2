@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
 import { MdDialog } from '@angular/material';
 import { AbstractControl } from '@angular/forms';
+import { AppService } from '../app.service';
 import { MapService } from '../map/map.service';
 import { Router, NavigationExtras } from '@angular/router';
 
@@ -17,11 +18,12 @@ export class DialogComponent implements OnInit {
 
   constructor(public dialog: MdDialog,
               private mapService: MapService,
-              private router: Router) {}
+              private router: Router,
+              private emmiterService: AppService) {}
 
   submitForm(formData) {
     this.mapService.state.markerCoords = {lat: parseFloat(formData.lat), lng: parseFloat(formData.long)};
-    this.panTo.emit(true);
+    this.emmiterService.setPanStatus(true);
     this.mapService.update({coords: [formData.lat, formData.long], radius: formData.radius, offset: 0})
     .then(() => {
                   const navigationExtras: NavigationExtras = {
