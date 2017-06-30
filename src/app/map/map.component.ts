@@ -49,9 +49,8 @@ export class MapComponent implements OnInit {
       };
 
       this.router.navigate([''], navigationExtras);
-
       if (this.content.nativeElement.scrollHeight <= this.content.nativeElement.clientHeight) {
-          this.appService.update({coords});
+        this.update({coords});
       }
     })
   }
