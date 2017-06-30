@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MdDialog, MdGridListModule, MdGridTile } from '@angular/material';
 
 import { AppService } from '../app.service';
@@ -8,7 +8,7 @@ import { AppService } from '../app.service';
   templateUrl: './photo-dialog.component.html',
   styleUrls: ['./photo-dialog.component.scss']
 })
-export class PhotoDialogComponent implements OnInit {
+export class PhotoDialogComponent implements OnInit, OnDestroy {
   data: any;
   amount: number;
   index: number;
@@ -23,6 +23,11 @@ export class PhotoDialogComponent implements OnInit {
   ngOnInit() {
     this.data = this.emmiterService.currentPhotoData;
     this.updateCounter();
+    window.addEventListener('keydown', this.onKeyboardKeyPress, true);
+  }
+
+  ngOnDestroy() {
+    window.removeEventListener('keydown', this.onKeyboardKeyPress);
   }
 
   nextPhoto() {
@@ -46,4 +51,22 @@ export class PhotoDialogComponent implements OnInit {
     this.updateCounter();
   }
 
+  onKeyboardKeyPress = event => {
+    if (event.defaultPrevented) {
+      return;
+    }
+
+    switch (event.key) {
+      case 'ArrowLeft':
+        this.prevPhoto();
+        break;
+      case 'ArrowRight':
+        this.nextPhoto();
+        break;
+      default:
+        return;
+    }
+
+    event.preventDefault();
+  }
 }
